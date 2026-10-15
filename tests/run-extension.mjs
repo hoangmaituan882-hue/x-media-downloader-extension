@@ -18,7 +18,7 @@ const server = createServer((_req, res) => {
 });
 let context;
 try {
-  await cp(resolve("dist"), extensionPath, { recursive: true });
+  await cp(resolve(process.env.XMD_EXTENSION_DIR || "dist"), extensionPath, { recursive: true });
   const manifest = JSON.parse(await readFile(join(extensionPath, "manifest.json"), "utf8"));
   manifest.host_permissions.push("http://127.0.0.1/*");
   await writeFile(join(extensionPath, "manifest.json"), JSON.stringify(manifest));
@@ -79,6 +79,12 @@ try {
   assert.equal(result.slow.bytes, 8);
   assert.ok(result.elapsed >= 9000, `download acknowledged too early: ${result.elapsed} ms`);
   assert.equal(result.cancelled.success, false);
+  const galleryErrors = [];
+  page.on("pageerror", error => galleryErrors.push(error.message));
+  await page.goto(`chrome-extension://${extensionId}/gallery.html`);
+  await page.waitForFunction(() => document.querySelector("#root")?.childElementCount > 0);
+  assert.deepEqual(galleryErrors, [], "Packaged gallery must load without runtime errors");
+  result.galleryLoaded = true;
   await mkdir(resolve("test-results"), { recursive: true });
   await writeFile(resolve("test-results/extension.json"), JSON.stringify(result, null, 2));
   console.log(JSON.stringify(result, null, 2));

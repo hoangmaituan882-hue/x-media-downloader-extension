@@ -68,6 +68,7 @@ npx tsc --noEmit     # 类型检查必须零错误
 - **改动生效三步（缺一不可）**：① `npm run build` → ② chrome://extensions 点扩展「重新加载」→ ③ 刷新 x.com 页面
 - 媒体视图切换回归：`npm run test:media-views`（使用已安装的 Microsoft Edge，无头运行；详见 `tests/README.md`）。其他 UI 可用本地静态服务器（dist 回退 test.html，`.css`→styles.css、`.js`→content.js）+ 浏览器截图验证。注意 `npm run build` 的 emptyOutDir 会删掉 dist/test.html，测试页要在 build **之后**创建。
 - 核心下载回归：`npm test`；真实扩展通道回归：构建后运行 `npm run test:extension`（隔离的 Edge 配置，不访问 X 账号；详见 `tests/README.md`）。
+- 发布安装包：`npm run package:extension` 生成 `release/v版本号/X-Media-Downloader/` 和 ZIP（附离线安装说明）；再运行 `npm run test:package` 验证解压后的实际扩展。
 - 页内下载按钮及已下载标记回归：`npm run test:inline-media`（真实播放的视频与播放器覆盖层、本地模拟下载完成、四视图及减少动效偏好）。
 - 悬停大图稳定性回归：`npm run test:hover-preview`（鼠标静止逐帧采样、缩略图到大图移入移出、历史页、主动关闭及切换视图）。
 - 深链调试：`#xmd-settings` / `#xmd-history` 直接打开对应视图。

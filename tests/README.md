@@ -11,6 +11,16 @@ seconds and a cancelled download. The runner copies `dist/` to a temporary exten
 and uses a separate browser profile, localhost server and temporary download files.
 It never accesses an X account. Results go to `test-results/extension.json`.
 
+## Release package
+
+Run `npm run package:extension` then `npm run test:package`. Packaging creates a ZIP
+with the ready-to-load `X-Media-Downloader/` folder and an offline Chinese guide.
+The check verifies SHA-256, extracts the ZIP, compares every runtime file to `dist/`
+and runs the native extension checks against the extracted folder, including the
+gallery page. Temporary files and the separate Edge profile are removed afterwards.
+
+`npm test` also covers package contents, missing dependencies and stale versions.
+
 ## Media view transitions
 
 Run `npm run test:media-views` after installing dependencies. The runner starts a

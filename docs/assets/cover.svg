@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" fill="none">
+  <title>X Media Downloader — 把喜欢的图片与视频，稳稳收好</title>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#11131C"/><stop offset="1" stop-color="#29203F"/></linearGradient>
+    <linearGradient id="card" x2=".5" y2="1"><stop stop-color="#B7A2F0"/><stop offset="1" stop-color="#7D7FE2"/></linearGradient>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="white" fill-opacity=".045"/></pattern>
+  </defs>
+  <rect width="1200" height="360" rx="24" fill="url(#bg)"/>
+  <rect width="1200" height="360" rx="24" fill="url(#dots)"/>
+  <circle cx="1115" cy="75" r="190" stroke="#B9A3F8" stroke-opacity=".1"/>
+  <circle cx="1115" cy="75" r="240" stroke="#B9A3F8" stroke-opacity=".06"/>
+  <rect x="54" y="47" width="58" height="58" rx="18" fill="white" fill-opacity=".1" stroke="white" stroke-opacity=".13"/>
+  <path d="M83 60v25m-9-9 9 9 9-9M69 87v8h28v-8" stroke="#DDD4FC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="132" y="73" fill="#CBBDEB" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="2.4">YOUR MEDIA. YOUR COLLECTION.</text>
+  <text x="132" y="96" fill="#A09AAE" font-family="Segoe UI,Arial,sans-serif" font-size="13">Chrome / Edge · Manifest V3</text>
+  <text x="54" y="171" fill="white" font-family="Segoe UI,Arial,sans-serif" font-size="53" font-weight="700" letter-spacing="-1.7">X Media Downloader</text>
+  <text x="57" y="217" fill="#C2BDCE" font-family="Microsoft YaHei,Segoe UI,sans-serif" font-size="22">把喜欢的图片与视频，稳稳收好。</text>
+  <g fill="white" fill-opacity=".08"><rect x="56" y="260" width="100" height="32" rx="16"/><rect x="167" y="260" width="100" height="32" rx="16"/><rect x="278" y="260" width="100" height="32" rx="16"/></g>
+  <g fill="#D6D0E3" font-family="Microsoft YaHei,Segoe UI,sans-serif" font-size="13" text-anchor="middle"><text x="106" y="281">原图 / 视频</text><text x="217" y="281">自动去重</text><text x="328" y="281">解压即用</text></g>
+  <g transform="rotate(-12 890 181)"><rect x="811" y="87" width="158" height="198" rx="18" fill="#454052" stroke="#746983"/><rect x="824" y="100" width="132" height="132" rx="10" fill="#A3BBB1"/><path d="m824 204 44-53 38 37 50-21v65H824z" fill="#6C9184"/><rect x="828" y="247" width="80" height="6" rx="3" fill="#8F899E"/></g>
+  <g transform="rotate(11 1042 181)"><rect x="963" y="87" width="158" height="198" rx="18" fill="#484052" stroke="#746983"/><rect x="976" y="100" width="132" height="132" rx="10" fill="#CFB29C"/><circle cx="1063" cy="144" r="22" fill="#FFE4B7"/><path d="m976 215 46-56 37 50 49-34v57H976z" fill="#A2818B"/><rect x="980" y="247" width="80" height="6" rx="3" fill="#8F899E"/></g>
+  <rect x="893" y="69" width="172" height="216" rx="20" fill="#F4F0FA"/>
+  <rect x="907" y="83" width="144" height="150" rx="12" fill="url(#card)"/>
+  <circle cx="1015" cy="121" r="21" fill="#E3D7FD"/>
+  <path d="m907 209 49-69 42 55 53-29v67H907z" fill="#6658A8"/>
+  <path d="m907 218 46-23 47 18 51-13v33H907z" fill="#514584"/>
+  <rect x="910" y="249" width="86" height="7" rx="3.5" fill="#C5BDCF"/>
+  <rect x="910" y="264" width="59" height="5" rx="2.5" fill="#DED8E5"/>
+  <circle cx="1031" cy="260" r="13" fill="#7C63B7"/>
+  <path d="m1025 260 4 4 7-8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

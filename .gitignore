@@ -2,6 +2,7 @@ node_modules/
 .agents/
 .codex/
 test-results/
+release/
 playwright-report/
 coverage/
 .env

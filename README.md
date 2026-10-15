@@ -1,169 +1,160 @@
-# X Media Downloader — 浏览器扩展版（v7.7 · React UI）
+<div align="center">
 
-基于注入版 v7.2 演进的 Manifest V3 扩展。v7.3 起 UI 层迁移到
-**React 19 + Motion + Tailwind CSS v4**，动画组件采用
-[beUI v2](https://github.com/starc007/ui-components)（MIT，源码复制进本仓库，见
-`src/components/motion/ATTRIBUTION.md`），面板渲染在 **Shadow DOM** 内，
-与 x.com 页面样式完全隔离。
+![X Media Downloader](docs/assets/cover.svg)
 
-## 功能
+**X / Twitter 图片与视频下载扩展**
 
-- 三种采集：快速扫描 / 自动加载（无限滚动）/ API 分页抓取（GraphQL）
-- 四种媒体视图：列表 / 卡片 / 推文 / 打包，切换时缩略图共享元素位移
-- 增量备份：扩展环境记录存 chrome.storage.local，本地测试回退 localStorage；再次采集自动跳过
-- 时间线命名（Snowflake ID / API created_at），同一天单张不加序号、多张从 001 计数
-- 自定义文件夹 + 子文件夹（File System Access API），默认按博主建子目录
-- 3 路并发下载 + 失败重试 + 浏览器下载回退（媒体字节经后台 Service Worker 抓取，绕开 CORS）
-- 日期区间过滤：批量下载只下最近 N 天发布的媒体
-- 订阅推送：关注博主 + 定时「真人式」访问自动备份新内容 + 结果记录 + 桌面通知
-- 历史页（统计 / 博主榜 / 日期过滤 / 真实头像）+ 画廊页（日期分组 / 批量补下载 / 灯箱）
-- 下载动画（蚀刻点阵 / 跑马灯画廊）接管面板
-- 动效 UI：beUI 状态按钮（下载按钮 idle→loading→success/error）、弹簧开关、
-  分段 Tabs、动画 Toast 栈、Motion 拖拽面板
+单张原图 · 批量收集 · 已下载自动跳过 · 下载历史
 
-## 安装（Chrome / Edge）
+[![下载即用安装包](docs/assets/download.svg)](https://github.com/hoangmaituan882-hue/x-media-downloader-extension/releases/download/v7.7.0/x-media-downloader-v7.7.0.zip)
 
-扩展目录是构建产物 **`dist/`**，不是仓库根目录：
+[安装教程](#install) · [功能介绍](#features) · [常见问题](#faq) · [全部版本](https://github.com/hoangmaituan882-hue/x-media-downloader-extension/releases) · [更新记录](CHANGELOG.md)
 
-仓库已包含构建好的 `dist/`。下载仓库 ZIP 并解压后，可直接从下面第 3 步加载。
-修改源码后，需要重新构建，并在扩展管理页重新加载扩展，再刷新 x.com 页面。
+**Chrome / Microsoft Edge** &nbsp; · &nbsp; **v7.7.0** &nbsp; · &nbsp; **下载后解压即可加载**
 
-1. `npm install`
-2. `npm run build`（生成 `dist/`）
-3. 打开 `chrome://extensions`（Edge 为 `edge://extensions`），开启「开发者模式」
-4. 「加载已解压的扩展程序」→ 选择 **`dist`** 目录
-5. 刷新 x.com，右上角出现面板即生效
+</div>
 
-开发时可用 `npm run watch` 持续构建（改动后在扩展页点「刷新」重载）。
+---
 
-## 目录结构
+## 📦 先下载安装包
 
-```
-├── src/
-│   ├── content.tsx            入口：Shadow DOM 挂载 React 应用
-│   ├── styles.css             Tailwind v4 + shadcn 颜色令牌
-│   ├── core/                  框架无关的核心逻辑（自 v7.2 移植）
-│   │   ├── engine.ts          zustand 状态机：扫描/滚动/API/下载编排
-│   │   ├── scanner.ts         DOM 媒体扫描 + 时间提取
-│   │   ├── api.ts             GraphQL UserMedia 模板捕获与分页解析
-│   │   ├── downloader.ts      后台抓取通道 / FS API / 浏览器回退
-│   │   ├── store.ts           已下载记录（localStorage）
-│   │   ├── page.ts            页面上下文 / 滚动
-│   │   └── utils.ts           URL 升级 / 扩展名检测 / Snowflake / 命名
-│   ├── components/motion/     beUI 组件源码（MIT，见 ATTRIBUTION.md）
-│   └── ui/                    面板 / 网格 / Toast / 内联按钮
-├── extension/                 静态扩展文件（构建时拷入 dist）
+**[点击下载 x-media-downloader-v7.7.0.zip](https://github.com/hoangmaituan882-hue/x-media-downloader-extension/releases/download/v7.7.0/x-media-downloader-v7.7.0.zip)**
+
+无需安装 Node.js，无需编译。安装包已经包含浏览器需要的扩展文件，以及可离线打开的中文安装说明。
+
+解压后你会看到：
+
+```text
+📁 解压后的目录
+├── 📁 X-Media-Downloader     ← 在浏览器中选择这个文件夹
 │   ├── manifest.json
-│   ├── background.js          Service Worker：代理媒体字节抓取
-│   └── icons/
-├── vite.config.ts             IIFE 单文件构建 + 静态拷贝
-└── dist/                      ← 装进浏览器的目录（构建产物）
+│   ├── content.js
+│   ├── background.js
+│   ├── styles.css
+│   ├── icons/
+│   └── …
+└── 安装说明.html             ← 双击查看排版清晰的安装指南
 ```
 
-## 使用说明
+> **认准 `manifest.json` 所在的文件夹。** 不要把 ZIP 文件或源码目录直接拖进浏览器。
 
-- **API 模式**：先点页面上的「媒体」标签让 X 客户端加载一次列表（扩展借此捕获
-  请求模板，免疫 queryId 变化），再点面板「API」按钮。
-- **保存位置**：点「选择」挑文件夹，可填子文件夹名（资料页默认预填博主用户名）。
-  文件夹句柄不跨会话持久化，刷新页面后需重新选择。
-- **已下载自动跳过**：单张下载完成后面板同步显示「已下载」，后续扫描及批量勾选自动排除；「清空记录」可重置，需要找回文件时可在历史页补下载。
-- **Escape** 折叠面板；面板头部可拖拽移动。
+<a id="install"></a>
 
-## v7.7 当前版本修复
+## 🚀 安装只需几步
 
-- 列表、卡片、推文、打包视图的共享缩略图平滑位移。
-- 修复启动读档、Chrome 消息传输媒体字节及下载完成状态判断。
-- 单张和批量下载提前预留序号，按实际保存目录分组，避免并发重名。
-- API 模板核验博主归属，避免切换页面后混用上一位博主的请求。
-- 单张下载复用面板中的媒体项，成功后自动更新已下载状态，失败保留重试。
-- 图片页内按钮从圆形展开为「下载原图」胶囊，视频播放层与封面层均支持下载。
-- 修复悬停大图反复收回；列表、卡片、推文及历史页预览保持稳定。
+| 步骤 | 怎么做 |
+| :---: | --- |
+| **1 · 解压** | 下载上面的 ZIP，右键选择「全部解压」，把文件夹放到固定位置。 |
+| **2 · 打开扩展页** | Chrome 地址栏输入 `chrome://extensions`；Edge 输入 `edge://extensions`。 |
+| **3 · 加载** | 开启「开发者模式」→「加载已解压的扩展程序」→ 选择 **`X-Media-Downloader`** 文件夹。 |
+| **4 · 开始使用** | 刷新 [x.com](https://x.com/)，点击浏览器工具栏里的扩展图标展开面板。 |
 
-## 开发验证
+加载后请保留扩展文件夹，浏览器会持续从这个位置读取文件。
 
-```bash
-npm ci
-npx tsc --noEmit
-npm test
-npm run test:media-views
-npm run test:inline-media
-npm run test:hover-preview
-npm run build
-npm run test:extension
-```
+<details>
+<summary><strong>以后更新版本怎么操作？</strong></summary>
 
-浏览器回归使用已安装的 Microsoft Edge。详见 `tests/README.md`。
-本地 `.agents/` 技能目录与测试截图不属于发布文件。
+1. 下载新版本安装包并解压。
+2. 用新文件替换原来的 `X-Media-Downloader` 文件夹内容，**保持文件夹路径不变**。
+3. 在扩展管理页点击「重新加载」，再刷新 X 页面。
 
-## v7.6 新功能与修复
+这样可以沿用原扩展的设置与下载记录。
 
-### 新功能
+</details>
 
-- **按博主分组网格**：浏览刷帖（inline 采集）时网格按博主分组，组头显示头像 +
-  用户名 + 张数，48px 迷你卡片 flex 排布。
-- **下载历史页**（面板顶栏入口 / `#xmd-history` 深链）：总媒体 / 今日 / 博主 / 总体积
-  统计、最近 14 天柱状图（点柱过滤）、博主榜（按张数 / 最近）、下钻缩略图 + 预览
-  morph、CSV/JSON 导出、打开画廊、长按清空全部历史。
-- **画廊页**（`gallery.html`）：按日期分组无限滚动、批量补下载、灯箱、按博主过滤
-  （历史页「打开画廊」传 `?user=`）。
-- **下载动画**：设置可选「蚀刻点阵」（canvas 网格 + 底部跑马灯，随下载密度动态
-  排布、鼠标扰动）或「跑马灯画廊」（大计数 + 三行反向跑马灯），下载时接管面板。
-- **命名优化**：同一天单张不加 `_001`、两张以上从 `_001` 计数；文件夹默认按博主名；
-  历史列表与画廊头部显示博主真实头像。
-- **订阅推送**：设置里关注博主 + 间隔，后台定时「真人式」逐个打开媒体页自动推送；
-  「最近推送」记录（博主 + 新下载数 + 相对时间）；下载完成桌面通知。
-- **日期区间过滤**：下载设置「日期范围」（不限 / 7 / 30 / 90 天），批量下载只下最近
-  N 天发布的媒体。
+<a id="features"></a>
 
-### 修复
+## ✨ 能做什么
 
-- **图片下载空白**：图片改为 `chrome.downloads` 按 URL 直下（不再经后台抓取字节，
-  规避 twimg 空白/占位内容）；后台回传 fileSize，历史「总体积」计入图片体积。
-- **视频下载**：注入脚本拦截 GraphQL 响应提取真实 mp4（video.twimg.com CORS 开放），
-  MSE blob 视频据此换成直链下载。
-- **页内按钮白屏 / 漂移**：重写为事件委托 + 单一 fixed 按钮（不往 React 节点插入
-  元素）；rAF 逐帧跟随 + 媒体指纹防虚拟列表复用漂移 + 滚出视口隐藏；修 display
-  `!important` 优先级导致按钮无法隐藏的问题。
-- **API 模式失效**：X 媒体时间线请求改走 XHR 且需 `x-twitter-active-user` /
-  `x-twitter-auth-type` 头；改为注入脚本 fetch/XHR 双路拦截模板（不再依赖
-  performance 资源计时），并修正 429/错误被吞的问题。
+| 想做的事 | 对应功能 |
+| --- | --- |
+| **看到一张就保存** | 悬停图片显示下载按钮，展开为「下载原图」；视频播放时也能下载。 |
+| **一次整理很多媒体** | 扫描当前页面、自动滚动加载，或在博主媒体页通过 API 分页收集。 |
+| **换一种方式查看** | 列表、卡片、推文、打包四种视图，支持同元素切换和悬停大图预览。 |
+| **避免重复保存** | 单张下载与面板状态同步，已下载项自动标注并排除后续批量勾选。 |
+| **文件保存有条理** | 按博主、月份或自定义目录分类，文件名支持发布日期、序号和推文文字。 |
+| **找回之前的文件** | 历史统计、日期过滤、博主列表和独立画廊，支持补下载。 |
+| **关注内容持续更新** | 配置订阅博主与检查间隔，定时收集新媒体并记录推送结果。 |
 
-## v7.4 新功能
+## 👀 界面预览
 
-- **设置中心**（面板齿轮 / `#xmd-settings` 深链）：
-  - 文件命名令牌模板：`{user} {date} {time} {seq} {id} {month}`，三个预设
-    （纯时间 / 博主+时间 / 博主+时间+ID）+ 自定义 + 实时预览；
-  - 文件夹策略：不建 / 按博主 / 按月份 / 博主+月份 / 自定义模板（`/` 分层）；
-  - 页内按钮：启用、仅悬停显示、视频也显示、右键菜单、点击行为（直下/入队）；
-  - 下载：跳过已下载、失败重试、并发数 1/3/5。
-  - 设置存 `chrome.storage.local`，跨会话持久化。
-- **页内 hover 下载按钮**：每条推文图片/视频右上角圆形按钮，悬停显示，
-  点击按设置直接下载或加入队列；MutationObserver 注入，幂等防重复。
-- **右键菜单**「用 X Media 下载此图片」。
-- **按天计数 `{seq}`**：序号 = 同目录内同博文发布日的持久化计数 +1，
-  跨会话不重名；批量下载从已有计数续编。
-- **chrome.downloads 子目录回退**：未选文件夹时也能在下载目录自动建子目录
-  （manifest 增加 `storage / downloads / contextMenus` 权限）。
+<table>
+  <tr><th>卡片视图 · 一眼看清媒体</th><th>推文视图 · 同一条推文放在一起</th></tr>
+  <tr><td align="center"><img src="docs/assets/panel-card.png" width="360" alt="X Media Downloader 卡片视图"></td><td align="center"><img src="docs/assets/panel-tweet.png" width="360" alt="X Media Downloader 推文视图"></td></tr>
+</table>
 
-## v7.3.1 修复记录
+<sub>截图使用演示数据展示真实扩展界面。</sub>
 
-- **面板样式丢失（根因：`?inline` 冻结 Tailwind 扫描）**：Vite 的 `?inline` CSS
-  导入会在首次 transform 时冻结编译结果，后续扫描到的候选类进不来，导致大量
-  工具类缺失、面板渲染成"黑块"。改为副作用导入产出 `styles.css` 资产，内容脚本
-  运行时 `fetch(chrome.runtime.getURL("styles.css"))` 注入 Shadow Root。
-- **Shadow DOM 内 `@property` 被忽略**：Tailwind v4 的 border/shadow 工具类依赖
-  `@property` 注册的 `--tw-*` 变量，Shadow Root 内不生效。styles.css 增加层外
-  兜底规则（`#xmd-root [class~="border"]` 等）显式补上 border-style/width 与阴影。
-- **点击扩展图标无反应**：manifest 增加 `action`，后台 `chrome.action.onClicked`
-  发消息，内容脚本收到后展开面板。
-- **内联按钮被 X 页面样式覆盖**（变成蓝色圆钮/文字被裁）：内联按钮样式全部加
-  `!important` 压过页面样式表。
-- **HoldActionButton 尺寸失控**（默认 h-16 min-w-72 的大黑块）：覆盖为
-  `h-8 min-w-0 rounded-lg px-3` 的紧凑尺寸。
+## 🧭 第一次使用
 
-## 常见问题
+**下载单张**：把鼠标移到 X 的图片或视频上，点击右上角下载按钮。
 
-- **面板没出现**：确认加载的是 `dist/` 目录且已构建到最新；刷新页面。
-- **下载失败**：卡片显示红色 `!`；自动重试一次后回退浏览器下载通道。
-- **API 提示 429**：触发限频，稍后再试或改用「自动加载」。
-- **样式异常**：面板在 Shadow DOM 内，不受页面主题/插件样式影响；如仍异常请反馈。
+**批量保存**：进入博主的「媒体」页 → 点击「扫描」或「加载」→ 检查选择的媒体 → 点击「下载所选」。已下载的内容会自动跳过。
+
+**加载更多**：「加载」会自动向下滚动。「API」适合在博主媒体页分页收集；首次使用时，先点击 X 页面上的「媒体」标签，等列表加载完成。
+
+**调整保存方式**：通过面板设置文件名、文件夹策略、日期范围和并发数；下载历史在顶栏的历史入口查看。
+
+<a id="faq"></a>
+
+## 💬 常见问题
+
+<details>
+<summary><strong>提示「找不到清单文件」怎么办？</strong></summary>
+
+确认已经完整解压，并选择能直接看到 `manifest.json` 的 `X-Media-Downloader` 文件夹。
+如果下载的是 GitHub 的源码 ZIP，请选择解压后的 `dist/` 文件夹；页面顶部的即用安装包更省事。
+
+</details>
+
+<details>
+<summary><strong>加载后没有出现面板？</strong></summary>
+
+先刷新 X 页面，再点击浏览器工具栏中的扩展图标。如果面板折叠在角落，点击悬浮球展开。
+扩展仅在 `x.com` 与 `twitter.com` 页面运行。
+
+</details>
+
+<details>
+<summary><strong>文件保存在哪里？</strong></summary>
+
+通常保存在浏览器的默认下载目录，可按设置创建子目录。
+面板也提供文件夹选择入口；浏览器刷新后需要重新选择自定义文件夹。
+
+</details>
+
+<details>
+<summary><strong>已经下载过的文件还能再下载吗？</strong></summary>
+
+可以在下载历史中使用「补下载」找回文件。日常扫描和批量选择会自动跳过已保存项，避免重复下载。
+主动清除下载记录后，对应媒体会重新变为可选状态。
+
+</details>
+
+<details>
+<summary><strong>API 提示限频或没有捕获请求？</strong></summary>
+
+限频时先暂停，稍后再试，也可以改用「加载」自动滚动。
+未捕获请求时，先点击 X 页面上的「媒体」标签，等内容加载后再试。
+
+</details>
+
+<details>
+<summary><strong>扩展为什么需要这些权限？</strong></summary>
+
+- **存储**：保存设置、已下载记录和历史。
+- **下载**：通过浏览器保存媒体文件。
+- **标签页与定时任务**：按配置打开订阅博主页面、定时检查更新。
+- **通知与右键菜单**：显示下载结果，提供图片右键下载入口。
+
+</details>
+
+---
+
+## 🛠 开发与致谢
+
+普通使用请下载上面的即用包。需要修改源码、运行测试或制作新版本，可阅读[开发说明](docs/DEVELOPMENT.md)与[测试说明](tests/README.md)。
+
+使用 React 19、Motion、Tailwind CSS v4 与 Manifest V3 构建。动效组件基于 [beUI v2](https://github.com/starc007/ui-components)，详见[来源与适配记录](src/components/motion/ATTRIBUTION.md)。
+
+<div align="center"><sub>把收藏留给内容，把整理交给工具。</sub></div>
