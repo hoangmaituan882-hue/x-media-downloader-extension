@@ -1,0 +1,36 @@
+{
+  "name": "x-media-downloader-extension",
+  "version": "7.7.0",
+  "private": true,
+  "type": "module",
+  "description": "X (Twitter) media batch downloader — React UI (beUI components) + MV3 extension",
+  "scripts": {
+    "build": "vite build && vite build --config vite.gallery.config.ts && node scripts/copy-static.mjs",
+    "watch": "vite build --watch --mode development",
+    "test": "node --test tests/*.test.mjs",
+    "test:media-views": "node tests/run-media-views.mjs",
+    "test:hover-preview": "node tests/run-hover-preview.mjs",
+    "test:inline-media": "node tests/run-inline-media.mjs",
+    "test:extension": "node tests/run-extension.mjs"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.33.0",
+    "motion": "^13.1.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwind-merge": "^3.6.0",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/chrome": "^0.2.6",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.1.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
+  }
+}

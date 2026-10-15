@@ -1,0 +1,20 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Inline media regression</title></head>
+<body style="margin:0;background:#eef0f3;font-family:Arial,sans-serif">
+  <main style="width:440px;margin:40px">
+    <article data-testid="tweet" style="position:relative">
+      <div data-testid="User-Name"><a href="/alice">Alice</a></div>
+      <a href="/alice/status/100"><time datetime="2026-10-14T12:00:00+08:00">Oct 14</time></a>
+      <div data-testid="tweetPhoto" style="position:relative;width:400px;height:240px;margin-top:12px;border-radius:16px;overflow:hidden">
+        <img id="photo" src="https://pbs.twimg.com/media/inline-regression?format=jpg&name=small" style="width:100%;height:100%;object-fit:cover" alt="Fixture photo">
+      </div>
+    </article>
+    <article data-testid="tweet" style="margin-top:28px">
+      <div data-testid="videoPlayer" style="position:relative;width:400px;height:225px;border-radius:16px;overflow:hidden;background:#0f1419">
+        <video id="playing-video" muted loop playsinline poster="https://pbs.twimg.com/amplify_video_thumb/inline-regression.jpg" style="width:100%;height:100%;object-fit:cover"></video>
+        <div id="video-overlay" style="position:absolute;inset:0;display:flex;align-items:end;color:white;padding:20px;box-sizing:border-box">Playing · controls overlay</div>
+      </div>
+    </article>
+  </main>
+  <script type="module" src="/tests/inline-media.fixture.tsx"></script>
+</body></html>
